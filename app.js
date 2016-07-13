@@ -1,4 +1,4 @@
-var flight = require('./flight');
+var Flight = require('./flight');
 
 var pdxlax = {
 	number: 847,
@@ -6,7 +6,8 @@ var pdxlax = {
 	destination: 'LAX'
 };
 
-var pl = flight(pdxlax);
+var pl = new Flight()
+pl.fill(pdxlax);
 pl.triggerDepart();
 
 console.log( pl.getInformation() );
@@ -17,7 +18,8 @@ var ausdca = {
 	destination: 'DCA'
 };
 
-var ad = flight(ausdca);
+var ad = new Flight()
+ad.fill(ausdca);
 console.log( ad.getInformation() );
 
 console.log( pl.getInformation() );
