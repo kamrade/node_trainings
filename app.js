@@ -1,26 +1,34 @@
-var flight = require('./flight');
 
-var pdxlax = {
-	number: 847,
-	origin: 'PDX',
-	destination: 'LAX'
-};
+/**
+ * Module dependencies.
+ */
 
-var pl = flight.create(pdxlax);
-pl.triggerDepart();
+var express = require('express');
+var routes = require('./routes');
+var http = require('http');
+var path = require('path');
 
-console.log( pl.getInformation() );
+var app = express();
 
-var ausdca = {
-	number: 382,
-	origin: 'AUS',
-	destination: 'DCA'
-};
+// all environments
+app.set('port', process.env.PORT || 3000);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+app.use(express.favicon());
+app.use(express.logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.methodOverride());
+app.use(app.router);
+app.use(express.static(path.join(__dirname, 'public')));
 
-var ad = flight.create(ausdca);
-console.log( ad.getInformation() );
+// development only
+if ('development' == app.get('env')) {
+  app.use(express.errorHandler());
+}
 
-console.log( pl.getInformation() );
+app.get('/', routes.index);
 
-console.log( flight.getCount() );
-console.log( flight.getDestinations() );
+http.createServer(app).listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
+});
