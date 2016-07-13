@@ -3,28 +3,18 @@
  * GET home page.
  */
 
+var flights = require('../data');
 var flight = require('../flight');
 
-var flight1 = flight.create({
-	number: 1,
-	origin: 'LAX',
-	destination: 'DCA',
-	departs: '9AM',
-	arrives: '4PM'
-});
+for(var number in flights) {
+	flights[number] = flight.create(flights[number]);
+}
 
-var flight2 = flight.create({
-	number: 2,
-	origin: 'LAX',
-	destination: 'PDX',
-	departs: '10AM',
-	arrives: '12PM'
-});
-
-exports.flight1 = function(req, res){
-  res.json(flight1.getInformation());
-};
-
-exports.flight2 = function(req, res){
-  res.json(flight2.getInformation());
+exports.flight = function(req, res){
+	var number = req.param('number');
+	if(typeof flights[number] === 'undefined') {
+		res.status(404).json({status: 'error'});
+	} else {
+		res.json(flights[number].getInformation());
+	}
 };
